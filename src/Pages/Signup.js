@@ -4,6 +4,7 @@ import firebase from "firebase/compat/app";
 import stupFirebase from "../stupFirebase";
 import logo from '../Assets/Images/logo.png'
 import '../App.css'
+import {useNavigate} from "react-router-dom";
 
 var configUI = {
   signInFlow: 'popup',              //Popup windows
@@ -38,15 +39,10 @@ var configUI = {
 
 };
 
-const signout = () => {
-  firebase.auth().signOut().then(function (){
-      console.log("Success sign out")
-  }).catch(function () {
-      console.log("Error sign out")
-  })
-}
+
 
 const Signup = () => {
+    let navigate = useNavigate();
     useEffect(() => {
         const authObserver = firebase.auth().onAuthStateChanged((user) => { //When the user is logged in or logged out
             setUser(user); //Set wether there is a user or not
@@ -71,14 +67,7 @@ const Signup = () => {
             )
 
         }else{
-            return (
-                <>
-                    <p>Welcome, {user.displayName} </p>
-                    <small>{user.email}</small>
-                    <br/>
-                    <button onClick={signout}>Sign Out</button>
-                </>
-            )
+            navigate("/")
         }
 
     }else{ //IF there is not a user show the sign up page

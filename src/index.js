@@ -4,12 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './stupFirebase'
-
+import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-
-    <App />
+    <BrowserRouter>
+        <App /> {/* The various pages will be displayed by the `Main` component. */}
+    </BrowserRouter>
 
 );
 

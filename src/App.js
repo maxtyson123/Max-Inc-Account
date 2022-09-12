@@ -1,13 +1,17 @@
 import './App.css';
-import Signup from './Components/Signup'
+import Main from "./Components/Main";
+
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-             <Signup/>
-      </header>
-    </div>
+
+    return (
+        <div className="App">
+            <header className="App-header">
+                <Main />
+            </header>
+        </div>
+
   );
 }
 
