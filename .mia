@@ -1,0 +1,5 @@
+.max inc account
+.id = 1238971
+.name = server
+.password = var{userpass/cache}
+.auth = server.maxinc.cf/acc/redir/api/?=1238971 + ".cd." + {name + password}
