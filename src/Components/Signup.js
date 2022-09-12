@@ -58,17 +58,29 @@ const Signup = () => {
 
     const [user,setUser] = useState(null);
 
-
+    console.log(user)
 
     if(user){ //IF there is a user
-        return (
-            <>
-                <p>Welcome, {user.displayName} </p>
-                <small>{user.email}</small>
-                <br/>
-                <button onClick={signout}>Sign Out</button>
-            </>
-        )
+        if(!user.emailVerified){
+            return (
+                <>
+                    <h3>Please verify your email, <small>{user.email}</small></h3>
+                    <small>*Make sure to check your spam folder</small>
+
+                </>
+            )
+
+        }else{
+            return (
+                <>
+                    <p>Welcome, {user.displayName} </p>
+                    <small>{user.email}</small>
+                    <br/>
+                    <button onClick={signout}>Sign Out</button>
+                </>
+            )
+        }
+
     }else{ //IF there is not a user show the sign up page
         return(
             <>
