@@ -1,0 +1,61 @@
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import {SignedUser} from "../Pages/Home";
+
+
+
+
+export default function BasicTable() {
+    function createData(name, data) {
+        return { name, data };
+    }
+
+    var rows = [
+        createData('Name', SignedUser.displayName),
+        createData('Email', SignedUser.email),
+        createData('Email Verified', "True"),
+        createData('Stored Profile Picture', <a href={SignedUser.photoURL}>Link</a> ),
+        createData('Last Signed In Time', SignedUser.metadata.lastSignInTime),
+        createData('Account Creation Time', SignedUser.metadata.creationTime),
+
+
+
+    ];
+
+    for(let x = 0; x < SignedUser.providerData.length; x++){
+        rows.push(createData('Login Type ['+x+"]", SignedUser.providerData[x].providerId));
+    }
+    return (
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Account Detail</TableCell>
+                        <TableCell align="right">Value</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows.map((row) => (
+                        <TableRow
+                            key={row.name}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            <TableCell component="th" scope="row">
+                                {row.name}
+                            </TableCell>
+                            <TableCell align="right">{row.data}</TableCell>
+
+
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
+}

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {StyledFirebaseAuth} from "react-firebaseui";
 import firebase from "firebase/compat/app";
-import stupFirebase from "../stupFirebase";
 import logo from '../Assets/Images/logo.png'
 import '../App.css'
 import {useNavigate} from "react-router-dom";
+
 
 var configUI = {
   signInFlow: 'popup',              //Popup windows
@@ -26,12 +26,15 @@ var configUI = {
               //Send Email Verification
               try{ 
                   await authResult.user.sendEmailVerification();
+
                   console.log("Check your email");
               }catch (e) {
                   console.log(e);
               }
-              
+
           }
+
+
           return false;
       }
     }
@@ -57,12 +60,18 @@ const Signup = () => {
     console.log(user)
 
     if(user){ //IF there is a user
-        if(!user.emailVerified){
+
+        if(!user.emailVerified && user.providerData[0].providerId === 'password'){
             return (
                 <>
                     <h3>Please verify your email, <small>{user.email}</small></h3>
                     <small>*Make sure to check your spam folder</small>
-
+                    <a onClick={async () => {try{
+                        await user.sendEmailVerification();
+                        console.log("Check your email");
+                    }catch (e) {
+                        console.log(e);
+                    }}} style={{textDecoration: "underline"}} color={"blue"}  >Resend</a>
                 </>
             )
 

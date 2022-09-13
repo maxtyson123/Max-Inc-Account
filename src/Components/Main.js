@@ -10,6 +10,11 @@ const Main = () => {
             <Routes>
                     <Route index element={<Home/>} />
                     <Route path="/auth" element={<Signup />} />
+                    <Route path="/Home" element={<Home />} />
+                    <Route path="/Games" element={<Home />} />
+                    <Route path="/Launcher" element={<Home />} />
+                    <Route path="/Account" element={<Home />} />
+
             </Routes>
 
     );
