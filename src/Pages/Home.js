@@ -1,5 +1,6 @@
 import React, {useEffect} from "react";
 import firebase from "firebase/compat/app";
+import stupFirebase from "../stupFirebase";
 import {useNavigate,useLocation } from "react-router-dom";
 import {Button, Avatar} from "@mui/material";
 import ResponsiveDrawer from "../Components/SideNavBar";
@@ -7,7 +8,6 @@ import BasicTable from "../Components/UserInfoTable";
 import Box from "@mui/material/Box";
 import {doc, setDoc} from "firebase/firestore";
 
-const db = firebase.firestore();
 const Signout = () => {
 
     firebase.auth().signOut().then(function (){
@@ -20,32 +20,21 @@ const Signout = () => {
 
 }
 
+const DeleteAcc = () => {
+
+    firebase.auth().currentUser.delete().then(function (){
+        console.log("Success delete")
+
+    }).catch(function () {
+        console.log("Error delete")
+    })
+    window.location.reload();
+
+}
+
 export var SignedUser = null;
 export var Pannel = "/";
 
-
-async function setupUser(){
-    const userDocRef = db.collection('users').doc(SignedUser.uid);
-    const udoc = await userDocRef.get();
-    if (!udoc.exists) {
-        try{
-            await setDoc(doc(db, "users",SignedUser.uid), {
-                name: SignedUser.name,
-                games_owned: [],
-
-            });
-
-            console.log("Made User");
-        }catch (e) {
-            console.log(e);
-        }
-        console.log('No such document exist!');
-    } else {
-        console.log('Document exist!');
-
-    }
-
-}
 
 function Home() {
     let navigate = useNavigate();
@@ -64,8 +53,8 @@ function Home() {
             return (<p>No User</p>)
         }
         else{
-        setupUser();
-        if(Pannel == "/Home" || Pannel == "/"){
+
+        if(Pannel === "/Home" || Pannel === "/"){
 
             return(
                 <>
@@ -81,7 +70,7 @@ function Home() {
                 </>
             )
         }
-        if(Pannel == "/Account"){
+        if(Pannel === "/Account"){
             return(
                 <>
                     <ResponsiveDrawer/>
@@ -104,7 +93,10 @@ function Home() {
                     >
                         <BasicTable/>
                     </Box>
-
+                    <br/>
+                    <Button variant="outlined" color="error" onClick={DeleteAcc}>
+                        Delete Account
+                    </Button>
                 </>
             )
         }

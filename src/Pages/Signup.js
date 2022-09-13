@@ -4,11 +4,21 @@ import firebase from "firebase/compat/app";
 import logo from '../Assets/Images/logo.png'
 import '../App.css'
 import {useNavigate} from "react-router-dom";
+import stupFirebase from "../stupFirebase";
+import {doc, setDoc} from "firebase/firestore";
+
+
+
+const db = firebase.firestore();
+async function setupUser(user){
+
+
+}
 
 
 var configUI = {
   signInFlow: 'popup',              //Popup windows
-  signInSuccessUrl: "/",            //Where to go once logged in
+
   signInOptions: [
       //All the providers
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
@@ -22,6 +32,30 @@ var configUI = {
       signInSuccessWithAuthResult: async (authResult) => {
 
           const  userInfo = authResult.additionalUserInfo;
+
+          console.log("setting up user")
+
+          const userDocRef = db.collection('users').doc(userInfo.profile.email);
+          const udoc = await userDocRef.get();
+
+          if (!udoc.exists) {
+              try{
+                  await setDoc(doc(db, "users",userInfo.profile.email), {
+                      name: userInfo.profile.name,
+                      games_owned: [],
+
+                  });
+
+                  console.log("Made User");
+              }catch (e) {
+                  console.log(e);
+              }
+              console.log('No such document exist!');
+          } else {
+              console.log('Document exist!');
+
+          }
+
           if(userInfo.isNewUser && userInfo.providerId === 'password'){ //If the user is using username password to sign in
               //Send Email Verification
               try{ 
