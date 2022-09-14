@@ -4,19 +4,26 @@ import stupFirebase from "../stupFirebase";
 import {useNavigate,useLocation } from "react-router-dom";
 import {Button, Avatar} from "@mui/material";
 import ResponsiveDrawer from "../Components/SideNavBar";
-import BasicTable from "../Components/UserInfoTable";
+import BasicTable, {AuthTabel} from "../Components/UserInfoTable";
 import Box from "@mui/material/Box";
-import {doc, setDoc} from "firebase/firestore";
+import MeetingRoomRoundedIcon from '@mui/icons-material/MeetingRoomRounded';
+import PowerSettingsNewRoundedIcon from '@mui/icons-material/PowerSettingsNewRounded';
+import {Launch} from "@mui/icons-material";
+import AcccountTable from "../Components/UserInfoTable";
+import Typography from "@mui/material/Typography";
+import Cookies from 'universal-cookie';
 
 const Signout = () => {
 
     firebase.auth().signOut().then(function (){
         console.log("Success sign out")
+        window.location.reload();
 
     }).catch(function () {
         console.log("Error sign out")
+        window.location.reload();
     })
-    window.location.reload();
+
 
 }
 
@@ -24,11 +31,13 @@ const DeleteAcc = () => {
 
     firebase.auth().currentUser.delete().then(function (){
         console.log("Success delete")
+        Signout();
 
     }).catch(function () {
         console.log("Error delete")
+        window.location.reload();
     })
-    window.location.reload();
+
 
 }
 
@@ -39,6 +48,7 @@ export var Pannel = "/";
 function Home() {
     let navigate = useNavigate();
     const location = useLocation();
+    const cookies = new Cookies();
 
     SignedUser = firebase.auth().currentUser;
 
@@ -47,12 +57,22 @@ function Home() {
             navigate("/auth", { replace: true })
         }
     }, []);
+    useEffect(() => {
+        if(cookies.get('appName') != null && SignedUser !== null){
+            navigate("/authapp")
+
+        }
+    }, []);
+
     Pannel = location.pathname;
     if(SignedUser === null){
             navigate("/auth")
             return (<p>No User</p>)
         }
         else{
+            console.log(cookies.get('appName'));
+
+
 
         if(Pannel === "/Home" || Pannel === "/"){
 
@@ -81,7 +101,7 @@ function Home() {
                     />
                     <br/>
                     <Button variant="contained" onClick={Signout}>
-                        Sign Out
+                      <MeetingRoomRoundedIcon/>  Sign Out
                     </Button>
                     <br/>
                     <Box
@@ -91,12 +111,38 @@ function Home() {
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <BasicTable/>
+                        <AcccountTable/>
                     </Box>
                     <br/>
                     <Button variant="outlined" color="error" onClick={DeleteAcc}>
-                        Delete Account
+                     <PowerSettingsNewRoundedIcon/>   Delete Account
                     </Button>
+                </>
+            )
+        }
+        if(Pannel === "/Launcher"){
+            return(
+                <>
+                    <ResponsiveDrawer/>
+                    <Button fullWidth={true} variant="contained" onClick={Signout}>
+                        <Launch/>  Download Launcher
+                    </Button>
+                    <br/>
+                    <br/>
+
+                    <Typography variant={"h4"}>
+                        Auth Connections
+                    </Typography>
+                    <br/>
+                    <Box
+                        display="flex"
+
+                        bgcolor="black"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        <AuthTabel/>
+                    </Box>
                 </>
             )
         }

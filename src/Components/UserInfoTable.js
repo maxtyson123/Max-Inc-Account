@@ -7,11 +7,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {SignedUser} from "../Pages/Home";
+import {Avatar, Button} from "@mui/material";
+import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRounded";
 
 
 
 
-export default function BasicTable() {
+export default function AcccountTable(type) {
+
     function createData(name, data) {
         return { name, data };
     }
@@ -51,6 +54,69 @@ export default function BasicTable() {
                             </TableCell>
                             <TableCell align="right">{row.data}</TableCell>
 
+
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
+}
+
+function deleteAuth(){
+
+};
+
+export function AuthTabel(type) {
+
+    function createData(providername, authIp, authId) {
+        return { providername, authIp,authId };
+    }
+
+    var rows = [
+        createData( "example", "192.168.3.1","2341"),
+
+
+
+
+    ];
+
+    return (
+        <TableContainer component={Paper}  >
+            <Table sx={{color: 'red', minWidth: 650}}  aria-label="simple table">
+                <TableHead style={{background: "lightblue"}}>
+                    <TableRow sx={{color: "red"}}>
+                        <TableCell>Provider</TableCell>
+                        <TableCell >Icon</TableCell>
+                        <TableCell align="right">IP</TableCell>
+                        <TableCell align="right">ID</TableCell>
+                        <TableCell align="right">Remove</TableCell>
+
+                    </TableRow>
+                </TableHead>
+                <TableBody style={{background: "lightcyan"}}>
+                    {rows.map((row) => (
+                        <TableRow
+                            key={row.name}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            <TableCell component="th" scope="row">
+                                {row.providername}
+                            </TableCell>
+                            <TableCell align="right"> <Avatar
+                                alt={row.providername}
+                                src={"../Assets/"+row.providername+".png"}
+                                sx={{ width: 50, height: 50 }}
+                            /></TableCell>
+                            <TableCell align="right">{row.authIp} </TableCell>
+                            <TableCell align="right">{row.authId} </TableCell>
+                            <TableCell align="right">
+                                <Button variant="outlined" color="error" onClick={() =>{
+
+                                }}>
+                                    Remove
+                                </Button>
+                            </TableCell>
 
                         </TableRow>
                     ))}

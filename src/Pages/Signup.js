@@ -3,22 +3,16 @@ import {StyledFirebaseAuth} from "react-firebaseui";
 import firebase from "firebase/compat/app";
 import logo from '../Assets/Images/logo.png'
 import '../App.css'
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import stupFirebase from "../stupFirebase";
 import {doc, setDoc} from "firebase/firestore";
 
 
 
 const db = firebase.firestore();
-async function setupUser(user){
-
-
-}
-
 
 var configUI = {
   signInFlow: 'popup',              //Popup windows
-
   signInOptions: [
       //All the providers
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
@@ -80,6 +74,8 @@ var configUI = {
 
 const Signup = () => {
     let navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+    let auth = searchParams.get("authapp")
     useEffect(() => {
         const authObserver = firebase.auth().onAuthStateChanged((user) => { //When the user is logged in or logged out
             setUser(user); //Set wether there is a user or not
@@ -91,7 +87,6 @@ const Signup = () => {
 
     const [user,setUser] = useState(null);
 
-    console.log(user)
 
     if(user){ //IF there is a user
 
@@ -110,7 +105,14 @@ const Signup = () => {
             )
 
         }else{
+            console.log("auth",auth);
             navigate("/")
+
+
+
+
+
+
         }
 
     }else{ //IF there is not a user show the sign up page
