@@ -22,6 +22,7 @@ const Reject = () => {
 
     cookies.remove('appName');
     cookies.remove('appData');
+    cookies.remove('checkData');
 
 }
 
@@ -35,6 +36,7 @@ export default function () {
     const [searchParams, setSearchParams] = useSearchParams();
     let appName = searchParams.get("appname")
     let appData = searchParams.get("appdata");
+    let authed = searchParams.get("authed");
     if(appName != null){
         cookies.set('appName', appName, { path: '/' });
     }else{
@@ -52,18 +54,15 @@ export default function () {
         }
         if(cookies.get('appData') != undefined){
             appData = (cookies.get('appData'));
-            console.log(appData)
             appData = (atob(cookies.get('appData')));
-            console.log(appData)
             appData = JSON.parse(atob(cookies.get('appData')));
-            console.log(appData)
         }
 
     }
 
     useEffect(() => {
 
-        if(firebase.auth().currentUser === null){
+        if(firebase.auth().currentUser === null || authed === "yes"){
             navigate("/auth?authapp=true", { replace: true })
         }
     }, []);
@@ -85,6 +84,7 @@ export default function () {
                     <Typography maxWidth={"50%"}>
                         {appName} is trying to connect to your Max Inc account, do you wish to allow it to?
                     </Typography>
+
                 <br/>
                 <div>
                     <Button onClick={Reject} variant="outlined" color="error">
@@ -100,7 +100,10 @@ export default function () {
                     </Button>
 
                 </div>
-
+                <br/>
+                <br/>
+                <br/>
+                <Typography>(You may be prompted twice for security)</Typography>
 
             </ThemeProvider>
         </>

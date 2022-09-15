@@ -13,6 +13,7 @@ import AcccountTable from "../Components/UserInfoTable";
 import Typography from "@mui/material/Typography";
 import Cookies from 'universal-cookie';
 import {RefreshOutlined} from "@mui/icons-material";
+import {CheckAuth} from "../Components/AuthConnections";
 
 
 const cookies = new Cookies();
@@ -58,7 +59,7 @@ function Home() {
     let navigate = useNavigate();
     const location = useLocation();
 
-
+    console.log("aslkdjasijd",cookies.get('checkData'))
 
 
     SignedUser = firebase.auth().currentUser;
@@ -74,6 +75,24 @@ function Home() {
 
         }
     }, []);
+
+    if(cookies.get('appName') != null && SignedUser !== null){
+
+    }else{
+        let appid = localStorage.getItem("id");
+        if(appid != null){
+            if(appid !== undefined){
+
+            }else{
+                appid =  Math.floor(100000 + Math.random() * 900000)
+            }
+        }else{
+            appid =  Math.floor(100000 + Math.random() * 900000)
+        }
+        localStorage.setItem('id', appid);
+        CheckAuth("0001",appid);
+    }
+
 
     Pannel = location.pathname;
     if(SignedUser === null){
@@ -131,7 +150,7 @@ function Home() {
                 </>
             )
         }
-        if(Pannel === "/Launcher"){
+        if(Pannel === "/Launcher" || Pannel === "/Authentication"){
             return(
                 <>
                     <ResponsiveDrawer/>

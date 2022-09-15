@@ -18,6 +18,7 @@ const Main = () => {
                 <Route path="/Home" element={<Home />} />
                 <Route path="/Games" element={<Home />} />
                 <Route path="/Launcher" element={<Home />} />
+                <Route path="/Authentication" element={<Home />} />
                 <Route path="/Account" element={<Home />} />
             </Routes>
         </AnimatePresence>

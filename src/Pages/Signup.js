@@ -6,6 +6,7 @@ import '../App.css'
 import {useNavigate, useSearchParams} from "react-router-dom";
 import stupFirebase from "../stupFirebase";
 import {doc, setDoc} from "firebase/firestore";
+import {CheckAuth} from "../Components/AuthConnections";
 
 
 
@@ -105,8 +106,12 @@ const Signup = () => {
             )
 
         }else{
-            console.log("auth",auth);
-            navigate("/")
+
+
+
+            navigate("/");
+
+
 
 
 

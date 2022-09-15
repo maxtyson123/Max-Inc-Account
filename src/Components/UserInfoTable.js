@@ -70,12 +70,14 @@ function deleteAuth(){
 
 };
 
-const authinfo = {
+export const authinfo = {
     "0000":"Test",
+    "0001":"Max Inc Web Portal",
 }
 
 const imgInfo = {
-    "0000":"https://i.imgur.com/gHnPOBT.png"
+    "0000":"https://i.imgur.com/gHnPOBT.png",        //Max Inc Logo
+    "0001":"https://i.imgur.com/gHnPOBT.png",        //Max Inc Logo
 }
 
 const cookies = new Cookies();
@@ -138,9 +140,12 @@ export function AuthTabel(type) {
                             <TableCell align="right">
                                 <Button variant="outlined" color="error" onClick={() =>{
                                     let i = row.pos;
+                                    let x = row.providername;
                                     console.log(i);
                                     removeApp(authdata[i]);
                                     cookies.remove('authData');
+                                    if(x === "Max Inc Web Portal")
+                                     cookies.remove('checkData');
                                     navigate("/Launcher")
 
                                 }}>
