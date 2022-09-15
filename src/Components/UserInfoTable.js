@@ -9,6 +9,9 @@ import Paper from '@mui/material/Paper';
 import {SignedUser} from "../Pages/Home";
 import {Avatar, Button} from "@mui/material";
 import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRounded";
+import {GetAuth, removeApp} from "./AuthConnections";
+import Cookies from "universal-cookie";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -67,19 +70,40 @@ function deleteAuth(){
 
 };
 
+const authinfo = {
+    "0000":"Test",
+}
+
+const imgInfo = {
+    "0000":"https://i.imgur.com/gHnPOBT.png"
+}
+
+const cookies = new Cookies();
+
 export function AuthTabel(type) {
 
-    function createData(providername, authIp, authId) {
-        return { providername, authIp,authId };
+    let navigate = useNavigate();
+    function createData(providername, authIp, authId, pos,image) {
+        return { providername, authIp,authId,pos, image };
     }
 
     var rows = [
-        createData( "example", "192.168.3.1","2341"),
-
-
-
-
     ];
+    GetAuth();
+    var authdata = cookies.get('authData');
+    if(authdata != null){
+        if(authdata !== undefined){
+            console.log("authdata",authdata);
+            for(let x = 0; x < authdata.length; x++){
+                rows.push(createData(authinfo[authdata[x].appId], authdata[x].ip, authdata[x].appCode,x,imgInfo[authdata[x].appId]));
+            }
+
+        }
+
+    }
+
+
+
 
     return (
         <TableContainer component={Paper}  >
@@ -105,13 +129,19 @@ export function AuthTabel(type) {
                             </TableCell>
                             <TableCell align="right"> <Avatar
                                 alt={row.providername}
-                                src={"../Assets/"+row.providername+".png"}
+
+                                src={row.image}
                                 sx={{ width: 50, height: 50 }}
                             /></TableCell>
                             <TableCell align="right">{row.authIp} </TableCell>
                             <TableCell align="right">{row.authId} </TableCell>
                             <TableCell align="right">
                                 <Button variant="outlined" color="error" onClick={() =>{
+                                    let i = row.pos;
+                                    console.log(i);
+                                    removeApp(authdata[i]);
+                                    cookies.remove('authData');
+                                    navigate("/Launcher")
 
                                 }}>
                                     Remove

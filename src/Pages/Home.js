@@ -12,6 +12,10 @@ import {Launch} from "@mui/icons-material";
 import AcccountTable from "../Components/UserInfoTable";
 import Typography from "@mui/material/Typography";
 import Cookies from 'universal-cookie';
+import {RefreshOutlined} from "@mui/icons-material";
+
+
+const cookies = new Cookies();
 
 const Signout = () => {
 
@@ -25,6 +29,11 @@ const Signout = () => {
     })
 
 
+}
+
+const Refresh = () => {
+    cookies.remove('authData');
+    window.location.reload();
 }
 
 const DeleteAcc = () => {
@@ -48,7 +57,9 @@ export var Pannel = "/";
 function Home() {
     let navigate = useNavigate();
     const location = useLocation();
-    const cookies = new Cookies();
+
+
+
 
     SignedUser = firebase.auth().currentUser;
 
@@ -132,6 +143,11 @@ function Home() {
 
                     <Typography variant={"h4"}>
                         Auth Connections
+                    </Typography>
+                    <Typography>
+                        *It can take up to a minute to fully update, if page is empty please reload  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <Button variant="outlined" onClick={Refresh}>
+                        <RefreshOutlined/>
+                    </Button>
                     </Typography>
                     <br/>
                     <Box
